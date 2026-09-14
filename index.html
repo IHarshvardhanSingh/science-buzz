@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Science Buzz — one amazing science fact every day.">
+<meta name="theme-color" content="#06101d">
+<title>Science Buzz — Amazing Science Facts</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+<a class="logo" href="./"><span>⚛</span> Science <b>Buzz</b></a>
+<nav><a href="#today">Today</a><a href="#explore">Explore</a><a href="admin/">Content Studio</a></nav>
+</header>
+<main>
+<section class="hero">
+<div><p class="eyebrow">SCIENCE • CURIOSITY • DISCOVERY</p>
+<h1>Be curious.<br><em>Every single day.</em></h1>
+<p>Science Buzz turns fascinating science into quick, visual discoveries you can learn, remember and share.</p>
+<a class="cta" href="#today">Discover today's fact ↓</a></div>
+<div class="hero-visual"><div class="ring r1"></div><div class="ring r2"></div><div class="globe">✦</div><div class="spark s1">+</div><div class="spark s2">✦</div></div>
+</section>
+<section id="today" class="section">
+<div class="section-top"><div><p class="eyebrow">FACT OF THE DAY</p><h2 id="today-title">Loading…</h2></div><span id="today-date" class="pill"></span></div>
+<article class="today-card">
+<div class="visual"><img id="today-image" alt=""><div id="image-fallback" class="fallback">⚛</div></div>
+<div class="today-copy"><span id="today-category" class="tag"></span><h3 id="today-headline"></h3><p id="today-description"></p><div class="source"><b>🔬 Source</b><span id="today-source"></span></div><button id="share-btn" class="share">Share this fact ↗</button></div>
+</article>
+</section>
+<section id="explore" class="section">
+<div class="section-top"><div><p class="eyebrow">EXPLORE</p><h2>More science to discover</h2></div><select id="filter"><option value="all">All topics</option></select></div>
+<div id="grid" class="grid"></div>
+</section>
+</main>
+<footer>
+  <div class="footer-brand">
+    <div class="logo"><span>⚛</span> Science <b>Buzz</b></div>
+    <p>Curiosity is where discovery begins.</p>
+  </div>
+  <div class="footer-owner">
+    <img src="images/digital-guide-logo.png" alt="Digital Guide" class="owner-logo">
+    <div class="copyright">
+      <span>© <span id="year"></span> <strong>Digital Guide</strong>. All Rights Reserved.</span>
+      <span>Science Buzz is a product of Digital Guide.</span>
+      <a href="https://www.digitalguide.co.in" target="_blank" rel="noopener noreferrer">www.digitalguide.co.in ↗</a>
+    </div>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

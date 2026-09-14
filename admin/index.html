@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Science Buzz — Publisher</title>
+<link rel="stylesheet" href="admin.css"></head><body>
+<header><a href="../" class="brand">⚛ Science <b>Buzz</b></a><div><span id="user">Not signed in</span> <button id="login">Sign in with GitHub</button> <button id="logout" hidden>Sign out</button></div></header>
+<main>
+<div class="hero"><div><p>SCIENCE BUZZ V3 • LIVE PUBLISHING</p><h1>Publish directly<br>to GitHub.</h1><span>Sign in with GitHub, create your fact, add its image, and press Publish. The backend commits the changes to your repository.</span></div><div class="security"><b>🔐 Secure architecture</b><br>GitHub credentials stay on the server-side Worker. No Personal Access Token is embedded in this website.</div></div>
+
+<section id="config" class="card"><h2>First-time setup</h2><p>Enter the GitHub repository that contains this Science Buzz website. This setting is saved only in this browser.</p>
+<div class="cols"><label>Repository owner<input id="owner" placeholder="your-github-username"></label><label>Repository name<input id="repo" placeholder="science-buzz"></label><label>Branch<input id="branch" value="main"></label><label>Worker URL<input id="worker" placeholder="https://science-buzz-api.example.workers.dev"></label></div>
+<button id="save-config" class="primary">Save connection settings</button></section>
+
+<section class="card"><div class="cardhead"><div><h2>Daily fact</h2><p>Create the fact and publish it immediately.</p></div><span id="status" class="status">Not published</span></div>
+<form id="form"><div class="cols">
+<label>Date<input id="date" type="date" required></label><label>Category<input id="category" placeholder="Space / Biology / Physics" required></label>
+<label class="full">Fact title<input id="title" required placeholder="A short amazing fact"></label>
+<label class="full">Headline<input id="headline" required placeholder="The big idea in one sentence"></label>
+<label class="full">Explanation<textarea id="description" required placeholder="Explain the science clearly in 2–4 sentences."></textarea></label>
+<label>Source<input id="source" placeholder="NASA / ESA / research paper..."></label>
+<label>Fact image<input id="image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+</div><div id="preview-wrap" hidden><img id="preview" class="preview"></div>
+<div class="buttons"><button class="primary" id="publish" type="submit">🚀 Publish to GitHub</button><button type="button" id="clear">Clear</button></div></form>
+<div id="message" class="message"></div></section>
+
+<section class="card"><div class="cardhead"><div><h2>Recent facts</h2><p>Loaded from your GitHub repository after sign-in.</p></div><button id="refresh">Refresh</button></div><div id="facts"></div></section>
+</main><script src="admin.js"></script></body></html>
