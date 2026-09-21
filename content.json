@@ -1,8 +1,48 @@
 {
-  "site":{"name":"Science Buzz","tagline":"One amazing science fact every day."},
-  "facts":[
-    {"id":"2026-09-13","date":"2026-09-13","category":"Space","title":"A day on Venus is longer than its year","headline":"Venus spins incredibly slowly.","description":"Venus takes about 243 Earth days to rotate once on its axis, while it takes about 225 Earth days to orbit the Sun.","source":"NASA","image":"images/venus.jpg"},
-    {"id":"2026-09-12","date":"2026-09-12","category":"Nature","title":"Plants can warn their neighbors","headline":"Some plants communicate through chemical signals.","description":"When attacked, plants can release airborne chemicals that influence nearby plants and can help them prepare defensive responses.","source":"Plant ecology research","image":"images/tree.jpg"},
-    {"id":"2026-09-11","date":"2026-09-11","category":"Physics","title":"Light can behave like a wave and a particle","headline":"Light has a remarkable dual nature.","description":"Experiments show that light displays both wave-like and particle-like behavior, a key idea in quantum physics.","source":"Quantum physics","image":"images/light.jpg"}
+  "site": {
+    "name": "Science Buzz",
+    "tagline": "One amazing science fact every day."
+  },
+  "facts": [
+    {
+      "id": "2026-09-21",
+      "date": "2026-09-21",
+      "category": "Biology",
+      "title": "Gel Conversion",
+      "headline": "A Gell that turns Brain Cell into Neurons",
+      "description": "For years, one of the most frustrating facts in neuroscience has been this. Once your brain loses neurons, it basically doesn't get them back. The adult brain can make a few new ones here and there, but nowhere near enough to fix the kind of damage that diseases like Alzheimer's cause. So researchers have spent a long time trying to find a workaround, some way to convince the brain to grow replacement neurons on demand",
+      "source": "Research Paper",
+      "image": "images/2026-09-21-aa2bb1vy.png"
+    },
+    {
+      "id": "2026-09-13",
+      "date": "2026-09-13",
+      "category": "Space",
+      "title": "A day on Venus is longer than its year",
+      "headline": "Venus spins incredibly slowly.",
+      "description": "Venus takes about 243 Earth days to rotate once on its axis, while it takes about 225 Earth days to orbit the Sun.",
+      "source": "NASA",
+      "image": "images/venus.jpg"
+    },
+    {
+      "id": "2026-09-12",
+      "date": "2026-09-12",
+      "category": "Nature",
+      "title": "Plants can warn their neighbors",
+      "headline": "Some plants communicate through chemical signals.",
+      "description": "When attacked, plants can release airborne chemicals that influence nearby plants and can help them prepare defensive responses.",
+      "source": "Plant ecology research",
+      "image": "images/tree.jpg"
+    },
+    {
+      "id": "2026-09-11",
+      "date": "2026-09-11",
+      "category": "Physics",
+      "title": "Light can behave like a wave and a particle",
+      "headline": "Light has a remarkable dual nature.",
+      "description": "Experiments show that light displays both wave-like and particle-like behavior, a key idea in quantum physics.",
+      "source": "Quantum physics",
+      "image": "images/light.jpg"
+    }
   ]
 }
