@@ -5,6 +5,16 @@
   },
   "facts": [
     {
+      "id": "2026-10-19",
+      "date": "2026-10-19",
+      "category": "Space",
+      "title": "ISRO Tests a Critical Gaganyaan Spacecraft Separation System",
+      "headline": "A key safety system for India's human spaceflight mission passes ground tests.",
+      "description": "On 16 October 2026, the Indian Space Research Organisation (ISRO) announced the successful completion of a series of Crew Module–Service Module separation tests for its Gaganyaan programme. The tests simulated the separation process, including the disconnection of electrical and fluid connections between the two modules. Before the spacecraft's crew module re-enters Earth's atmosphere, it must separate from the service module. The tests also assessed the shock-survivability of critical crew-module systems. This milestone supports preparations for Gaganyaan's first uncrewed mission, targeted for 2026; it does not mean that a crewed mission has already flown.",
+      "source": "ISRO",
+      "image": "images/2026-10-19-gaganyaan-separation-system-explained.png"
+    },
+    {
       "id": "2026-10-03",
       "date": "2026-10-03",
       "category": "Energy",
