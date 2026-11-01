@@ -5,6 +5,16 @@
   },
   "facts": [
     {
+      "id": "2026-11-03",
+      "date": "2026-11-03",
+      "category": "Energy",
+      "title": "A Fusion Reactor Concept Uses Liquid Metal and Powerful Pistons",
+      "headline": "Canadian engineers are exploring a way to compress plasma without a conventional solid reactor inner wall.",
+      "description": "Canadian fusion company General Fusion is developing a technology called Magnetized Target Fusion. In its concept, a spinning layer of liquid metal surrounds magnetised plasma. A large array of synchronized pistons is designed to push the liquid metal inward, compressing the plasma and helping it reach conditions needed for fusion. The liquid metal could also absorb energy from fusion reactions and help protect the reactor structure.",
+      "source": "General Fusion",
+      "image": "images/2026-11-03-canada-s-liquid-metal-fusion-reactor.png"
+    },
+    {
       "id": "2026-11-02",
       "date": "2026-11-02",
       "category": "Space",
