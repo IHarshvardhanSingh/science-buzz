@@ -5,6 +5,16 @@
   },
   "facts": [
     {
+      "id": "2026-11-01",
+      "date": "2026-11-01",
+      "category": "Medical Science",
+      "title": "Mussel Inspired Surgical Glue",
+      "headline": "Researchers have developed flexible adhesives that can stick to wet, moving tissue",
+      "description": "Surgical adhesives must work in challenging conditions: living tissue is wet, flexible, and constantly moving. Researchers have developed bio-inspired adhesives designed to stick to wet tissues and remain flexible as they move. In a published study, a tough adhesive inspired by slug mucus sealed a defect in a pig’s heart—even while the heart was beating. The work could help inspire future surgical sealants, but it should not be described as a routine, approved treatment for human heart surgery.",
+      "source": "Science Research",
+      "image": "images/2026-11-01-bio-inspired-glue-for-beating-hearts.png"
+    },
+    {
       "id": "2026-10-19",
       "date": "2026-10-19",
       "category": "Space",
