@@ -5,6 +5,16 @@
   },
   "facts": [
     {
+      "id": "2026-11-21",
+      "date": "2026-11-21",
+      "category": "Marine Biology",
+      "title": "An Underwater City of 60 Million Fish Nests Beneath Antarctic Ice",
+      "headline": "Scientists discovered an enormous icefish breeding colony covering approximately 240 square kilometres beneath the Weddell Sea.",
+      "description": "In February 2021, researchers aboard the German research vessel Polarstern discovered an extraordinary underwater breeding ground beneath the Antarctic ice in the Weddell Sea.\nThe colony belongs to a species called Jonah's icefish (Neopagetopsis ionah). Scientists estimated that the area contained approximately 60 million active fish nests, spread across at least 240 square kilometers of the seafloor.\nEach circular nest is roughly 60 centimeters wide and is typically guarded by an adult fish protecting its eggs. Researchers estimated that many nests contained around 1,700 eggs.\nThe discovery was made using an underwater camera system towed across the ocean floor, at depths of approximately 420–535 metres.\nThis remarkable ecosystem is considered the largest continuous fish breeding colony discovered to date.",
+      "source": "Alfred Wegener Institute (AWI)",
+      "image": "images/2026-11-21-antarctic-icefish-nest-city.png"
+    },
+    {
       "id": "2026-11-03",
       "date": "2026-11-03",
       "category": "Energy",
