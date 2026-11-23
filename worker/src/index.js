@@ -96,31 +96,48 @@ function categoryHTML(category,items){
  const desc=`Explore ${category} facts, discoveries and explanations from Science Buzz.`;
  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escHTML(category)} Science Facts | Science Buzz</title><meta name="description" content="${escHTML(desc)}"><meta name="robots" content="index,follow"><link rel="canonical" href="${url}"><meta property="og:title" content="${escHTML(category)} Science Facts | Science Buzz"><meta property="og:description" content="${escHTML(desc)}"><meta property="og:url" content="${url}"><link rel="stylesheet" href="../../styles.css"></head><body><header class="topbar"><a class="logo" href="../../"><span>⚛</span> Science <b>Buzz</b></a><nav><a href="../../">Home</a><a href="../../#explore">Explore</a></nav></header><main class="article-page"><p class="eyebrow">SCIENCE BUZZ CATEGORY</p><h1>${escHTML(category)} Science Facts</h1><p class="article-deck">${escHTML(desc)}</p><div class="grid">${links}</div><a class="article-back" href="../../">← Back to Science Buzz</a></main></body></html>`;
 }
-async function getRepoText(owner,repo,path,branch,env,token){
- try{const d=await github(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(branch)}`,env,token);return {sha:d.sha,text:decodeB64UTF8(d.content||"")}}
- catch(e){if(String(e.message).includes("Not Found"))return {sha:null,text:null};throw e}
+function sitemapText(facts,categories){
+ const urls=[`${SITE_URL}/`,...facts.map(f=>`${SITE_URL}/facts/${factSlug(f)}/`),...categories.map(c=>`${SITE_URL}/category/${slugPart(c)||"science"}/`)];
+ return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${xmlEscape(u)}</loc></url>`).join("\n")}\n</urlset>\n`;
 }
-async function putRepoText(owner,repo,path,branch,text,env,token,message){
- const existing=await getRepoText(owner,repo,path,branch,env,token);
- await github(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}`,env,token,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,content:encodeB64UTF8(text),branch,sha:existing.sha||undefined})});
-}
-async function generateSEOFiles(owner,repo,branch,facts,indexHtml,env,token){
+function robotsText(){return `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;}
+async function generateSEOFiles(owner,repo,branch,facts,env,token,changedFact=null,oldFact=null){
  const sorted=[...facts].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
- for(const f of sorted){
-  await putRepoText(owner,repo,`facts/${factSlug(f)}/index.html`,branch,articleHTML(f,sorted),env,token,`Science Buzz: generate SEO page for ${f.date}`);
- }
  const categories=[...new Set(sorted.map(f=>f.category).filter(Boolean))];
- for(const cat of categories){
-  const slug=slugPart(cat)||"science";
-  await putRepoText(owner,repo,`category/${slug}/index.html`,branch,categoryHTML(cat,sorted.filter(f=>f.category===cat)),env,token,`Science Buzz: generate ${cat} category page`);
+ const files=[];
+ if(changedFact){
+  // Normal publishing only touches the changed article and its category page.
+  files.push({path:`facts/${factSlug(changedFact)}/index.html`,content:articleHTML(changedFact,sorted)});
+  const affectedCategories=[...new Set([changedFact.category,oldFact?.category].filter(Boolean))];
+  for(const category of affectedCategories){const slug=slugPart(category)||"science";files.push({path:`category/${slug}/index.html`,content:categoryHTML(category,sorted.filter(f=>f.category===category))});}
+  // Remove a prior article URL if today's fact was edited and its title changed.
+  if(oldFact && factSlug(oldFact)!==factSlug(changedFact)){
+   files.push({path:`facts/${factSlug(oldFact)}/index.html`,delete:true});
+  }
+ }else{
+  // Explicit full rebuild regenerates every article and category in one commit.
+  for(const f of sorted)files.push({path:`facts/${factSlug(f)}/index.html`,content:articleHTML(f,sorted)});
+  for(const cat of categories){const slug=slugPart(cat)||"science";files.push({path:`category/${slug}/index.html`,content:categoryHTML(cat,sorted.filter(f=>f.category===cat))});}
  }
- const urls=[`${SITE_URL}/`,...sorted.map(f=>`${SITE_URL}/facts/${factSlug(f)}/`),...categories.map(c=>`${SITE_URL}/category/${slugPart(c)||"science"}/`)];
- const sitemap=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${xmlEscape(u)}</loc></url>`).join("\n")}\n</urlset>\n`;
- await putRepoText(owner,repo,"sitemap.xml",branch,sitemap,env,token,"Science Buzz: update XML sitemap");
- const robots=`User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
- await putRepoText(owner,repo,"robots.txt",branch,robots,env,token,"Science Buzz: update robots.txt");
- // Deliberately do not modify index.html here. The homepage layout is maintained
- // manually; in particular, do not reinsert the removed category/latest-facts blocks.
+ files.push({path:"sitemap.xml",content:sitemapText(sorted,categories)});
+ files.push({path:"robots.txt",content:robotsText()});
+ const entries=files.map(f=>f.delete?{path:f.path,mode:"100644",type:"blob",sha:null}:{path:f.path,mode:"100644",type:"blob",content:f.content});
+ return commitTreeEntries(owner,repo,branch,entries,env,token,changedFact?`Science Buzz: update SEO for ${changedFact.date}`:"Science Buzz: rebuild SEO pages and sitemap");
+}
+async function commitTreeEntries(owner,repo,branch,entries,env,token,message){
+ const baseRef=await github(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/ref/heads/${encodeURIComponent(branch)}`,env,token);
+ const baseCommit=await github(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/commits/${baseRef.object.sha}`,env,token);
+ const tree=await github(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/trees`,env,token,{
+  method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({base_tree:baseCommit.tree.sha,tree:entries})
+ });
+ if(tree.truncated)throw new Error("GitHub returned a truncated Git tree; SEO update was stopped safely.");
+ const commit=await github(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/commits`,env,token,{
+  method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,tree:tree.sha,parents:[baseCommit.sha]})
+ });
+ await github(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/refs/heads/${encodeURIComponent(branch)}`,env,token,{
+  method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({sha:commit.sha,force:false})
+ });
+ return commit.sha;
 }
 
 function safeName(n){return n.toLowerCase().replace(/[^a-z0-9._-]+/g,"-").replace(/-+/g,"-").slice(-120)||"fact-image.jpg"}
@@ -164,8 +181,7 @@ export default {
     if(!/^[A-Za-z0-9_.-]+$/.test(b.owner)||!/^[A-Za-z0-9_.-]+$/.test(b.repo))throw new Error("Invalid repository name.");
     const c=await content(env,{owner:b.owner,repo:b.repo,branch:b.branch,token:s.token});
     const facts=Array.isArray(c.data.facts)?c.data.facts:[];
-    const indexFile=await getRepoText(b.owner,b.repo,"index.html",b.branch,env,s.token);
-    await generateSEOFiles(b.owner,b.repo,b.branch,facts,null,env,s.token);
+    await generateSEOFiles(b.owner,b.repo,b.branch,facts,env,s.token);
     return json({ok:true,message:`Generated SEO pages for ${facts.length} facts and refreshed category pages, sitemap.xml and robots.txt. Homepage layout was preserved.`},200,{origin:env.ALLOWED_ORIGIN});
    }
    if(url.pathname==="/api/content"){
@@ -182,14 +198,14 @@ export default {
     const newFact={id:b.date,date:b.date,category:b.category,title:b.title,headline:b.headline,description:b.description,source:b.source||"Science Buzz",image:imagePath};
     if(b.seoTitle)newFact.seoTitle=String(b.seoTitle).slice(0,65);
     if(b.seoDescription)newFact.seoDescription=String(b.seoDescription).slice(0,160);
-    const index=facts.findIndex(x=>x.date===b.date);if(index>=0)facts[index]=newFact;else facts.push(newFact);facts.sort((a,b)=>b.date.localeCompare(a.date));
+    const index=facts.findIndex(x=>x.date===b.date);const oldFact=index>=0?facts[index]:null;if(index>=0)facts[index]=newFact;else facts.push(newFact);facts.sort((a,b)=>b.date.localeCompare(a.date));
     let imageSha=null;
     try{imageSha=(await github(`/repos/${b.owner}/${b.repo}/contents/${imagePath}?ref=${encodeURIComponent(b.branch)}`,env,s.token)).sha}catch(e){}
     await github(`/repos/${b.owner}/${b.repo}/contents/${imagePath}`,env,s.token,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:`Science Buzz: image for ${b.date}`,content:b.imageBase64,branch:b.branch,sha:imageSha||undefined})});
     await github(`/repos/${b.owner}/${b.repo}/contents/content.json`,env,s.token,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:`Science Buzz: publish fact ${b.date}`,content:b64utf8(JSON.stringify({...c.data,facts},null,2)),branch:b.branch,sha:c.sha||undefined})});
-    const indexFile=await getRepoText(b.owner,b.repo,"index.html",b.branch,env,s.token);
-    await generateSEOFiles(b.owner,b.repo,b.branch,facts,null,env,s.token);
-    return json({ok:true,message:"Fact published. SEO article pages, category pages, sitemap.xml and robots.txt have also been generated."},200,{origin:env.ALLOWED_ORIGIN});
+    let seoUpdated=false,seoWarning=null;
+    try{await generateSEOFiles(b.owner,b.repo,b.branch,facts,env,s.token,newFact,oldFact);seoUpdated=true;}catch(seoError){seoWarning=seoError.message||"SEO update could not be completed.";}
+    return json({ok:true,seoUpdated,message:seoUpdated?"Fact published. Its article page, affected category page, sitemap.xml and robots.txt were updated in one SEO commit.":"Fact and image were published, but the SEO update needs a retry.",...(seoWarning?{seoWarning}:{})},200,{origin:env.ALLOWED_ORIGIN});
    }
    return json({error:"Not found."},404,{origin:env.ALLOWED_ORIGIN});
   }catch(e){return json({error:e.message||"Server error."},500,{origin:env.ALLOWED_ORIGIN})}
