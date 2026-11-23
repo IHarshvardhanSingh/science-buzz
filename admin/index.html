@@ -9,11 +9,15 @@
 <div class="cols"><label>Repository owner<input id="owner" placeholder="your-github-username"></label><label>Repository name<input id="repo" placeholder="science-buzz"></label><label>Branch<input id="branch" value="main"></label><label>Worker URL<input id="worker" placeholder="https://science-buzz-api.example.workers.dev"></label></div>
 <button id="save-config" class="primary">Save connection settings</button></section>
 
+<section class="card"><div class="cardhead"><div><h2>SEO tools</h2><p>Generate individual article pages, category pages, sitemap.xml and robots.txt from the facts currently in your GitHub repository.</p></div><button id="rebuild-seo" type="button">Generate SEO pages</button></div><div id="seo-message" class="message"></div></section>
+
 <section class="card"><div class="cardhead"><div><h2>Daily fact</h2><p>Create the fact and publish it immediately.</p></div><span id="status" class="status">Not published</span></div>
 <form id="form"><div class="cols">
 <label>Date<input id="date" type="date" required></label><label>Category<input id="category" placeholder="Space / Biology / Physics" required></label>
 <label class="full">Fact title<input id="title" required placeholder="A short amazing fact"></label>
 <label class="full">Headline<input id="headline" required placeholder="The big idea in one sentence"></label>
+<label class="full">SEO title (optional)<input id="seo-title" maxlength="65" placeholder="Search-friendly title (defaults to fact title)"></label>
+<label class="full">SEO description (optional)<textarea id="seo-description" maxlength="160" placeholder="Short search result description (defaults to fact explanation)"></textarea></label>
 <label class="full">Explanation<textarea id="description" required placeholder="Explain the science clearly in 2–4 sentences."></textarea></label>
 <label>Source<input id="source" placeholder="NASA / ESA / research paper..."></label>
 <label>Fact image<input id="image" type="file" accept="image/png,image/jpeg,image/webp"></label>

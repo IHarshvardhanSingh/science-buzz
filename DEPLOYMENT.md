@@ -101,3 +101,49 @@ const ALLOWED_ADMINS = ["your-github-username"];
 and reject `/api/publish` if `s.login` is not in that list.
 
 This makes the publishing endpoint an actual administrator-only CMS.
+
+
+## SEO upgrade (static GitHub Pages)
+
+This version includes:
+- Static, crawlable article pages under `facts/<slug>-<date>/`.
+- Static category landing pages under `category/<category>/`.
+- `sitemap.xml` and `robots.txt` (admin path disallowed).
+- Canonical URLs, Open Graph/Twitter metadata and Article JSON-LD on fact pages.
+- Homepage WebSite JSON-LD and crawlable article links.
+- Optional SEO title and SEO description fields in Content Studio.
+
+### Deploy the website files
+1. Extract the ZIP.
+2. Upload/commit the updated website and admin files from the `ScienceBuzz` folder to the root of the existing `science-buzz` GitHub repository (not the outer folder itself).
+3. **Do not blindly overwrite the live `content.json` or delete/replace the existing `images/` folder.** This ZIP's supplied `content.json` contains only three older sample facts and its images folder contains the two logos. Preserve the newer `content.json` and fact images already in your live repository.
+4. Keep the existing GitHub Pages source and Cloudflare Worker secrets/bindings unchanged.
+5. Allow GitHub Pages to finish deploying.
+6. Test these URLs:
+   - `https://iharshvardhansingh.github.io/science-buzz/robots.txt`
+   - `https://iharshvardhansingh.github.io/science-buzz/sitemap.xml`
+   - `https://iharshvardhansingh.github.io/science-buzz/facts/a-day-on-venus-is-longer-than-its-year-2026-09-13/`
+
+### Automatic SEO generation and rebuild
+The updated Worker generates/updates individual article pages, category pages, sitemap.xml, robots.txt and the homepage's crawlable article list after a successful fact publication.
+
+To generate SEO pages for all facts already in the live repository (without publishing a new fact), deploy the updated website and Worker, open the admin Content Studio, sign in with GitHub, and click **Generate SEO pages**. This rebuilds the article pages and sitemap from the repository's current `content.json`.
+
+To deploy the updated Worker, from the `worker` folder run:
+```bash
+npx wrangler deploy
+```
+This uses the existing Cloudflare Worker configuration. It does not require new secrets or bindings.
+
+### Google Search Console
+1. Add the URL-prefix property `https://iharshvardhansingh.github.io/science-buzz/`.
+2. Verify ownership using the HTML tag method.
+3. Add the verification meta tag to the homepage `<head>` in `index.html`, then commit and wait for GitHub Pages deployment.
+4. Click Verify in Search Console.
+5. Submit `sitemap.xml` (the sitemap path, not the full URL, if Search Console asks for a path).
+6. Use URL Inspection to request indexing of the homepage and important article URLs.
+
+### Notes
+- GitHub Pages serves this site under `/science-buzz/`; do not change the base path to `/`.
+- Existing historical image paths in content.json may refer to files that are not included in this ZIP. Add those image files or update their paths before expecting images to display.
+- Search indexing and ranking are controlled by Google and are not guaranteed by submitting a sitemap.

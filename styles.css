@@ -11,3 +11,24 @@ footer{margin-top:50px;padding:38px 5vw;border-top:1px solid var(--line);display
 .footer-brand{display:flex;flex-direction:column;gap:5px}.footer-brand p{margin:0;color:var(--muted)}
 .footer-owner{display:flex;align-items:center;gap:15px;text-align:right}.owner-logo{width:62px;height:62px;object-fit:contain}.copyright{display:flex;flex-direction:column;gap:3px}.copyright a{color:var(--green);font-weight:750}.copyright a:hover{text-decoration:underline}.copyright strong{color:var(--text)}
 @media(max-width:780px){nav a:not(:last-child){display:none}.hero{grid-template-columns:1fr;padding-top:60px}.hero-visual{height:280px}.today-card{grid-template-columns:1fr}.visual,.visual img,.fallback{min-height:290px}.today-copy{padding:30px}.today-copy h3{font-size:32px}.grid{grid-template-columns:1fr}.section-top{align-items:start;flex-direction:column}footer{flex-direction:column;align-items:start;gap:18px}.footer-owner{width:100%;text-align:left}.copyright{align-items:flex-start}}
+
+/* SEO article discovery links */
+.crawlable-index{margin-top:24px;padding:20px;border:1px solid var(--line);border-radius:16px;background:#ffffff06}
+.crawlable-index h3{margin:0 0 8px;color:var(--text)}
+.crawlable-index ul{margin:0;padding-left:20px;display:grid;gap:7px}
+.crawlable-index a,.item-link{color:var(--green)}
+.item-link{display:block}
+.item-link:hover{text-decoration:underline}
+.article-page{max-width:900px;margin:0 auto;padding:36px 24px 70px}
+.article-breadcrumb{color:var(--muted);font-size:14px;margin-bottom:22px}
+.article-header{padding:36px 0 24px;border-bottom:1px solid var(--line)}
+.article-header h1{font-size:clamp(36px,6vw,62px);line-height:1.05;letter-spacing:-2px;margin:12px 0}
+.article-deck{font-size:20px;color:var(--muted);max-width:760px}
+.article-meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+.article-hero{width:100%;max-height:520px;object-fit:cover;border-radius:20px;margin:28px 0}
+.article-body{font-size:18px;line-height:1.85;color:#e8f0f8;white-space:pre-line}
+.article-source{margin-top:30px;padding:18px;border:1px solid var(--line);border-radius:14px;color:var(--muted)}
+.article-related{margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+.article-related a{display:block;margin:10px 0;color:var(--green)}
+.article-back{display:inline-block;margin-top:28px;color:var(--green);font-weight:750}
+@media(max-width:600px){.article-page{padding:24px 18px 55px}.article-body{font-size:16px}}
